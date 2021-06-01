@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class RegisterController extends Controller
 
 
         event(new UserRegistered($user, $callback_url));
+        return $this->okResponse('Registration successful.', []);
     }
 
     private function create($request)
