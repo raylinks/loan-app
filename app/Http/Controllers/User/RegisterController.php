@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserDetail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\UserRegistered;
+use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
     
     public function store(Request $request)
     {
-        dd('j');
-       $this->validation($request);
+     
+       //$this->validation($request);
 
-        $user = $this->create($request->all());
-
+        $user = $this->create($request);
+       
         $user->details()->save((new UserDetail()));
 
         $callback_url = $request->callback_url;
-
-
+        
         event(new UserRegistered($user, $callback_url));
+
         return $this->okResponse('Registration successful.', []);
     }
 
@@ -31,9 +32,10 @@ class RegisterController extends Controller
     {
         return  User::create([
             'first_name' => $request->firstname,
-            'last_name' => $request->firstname,
-            'email' => $request->firstname ,
+            'last_name' => $request->lastname,
+            'email' => $request->email ,
             'password' => $request->password,
+            'email_token' => Str::random(7),
         ]);
     }
 

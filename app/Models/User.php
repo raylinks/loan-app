@@ -17,9 +17,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'email_token'
     ];
 
     /**
@@ -48,6 +50,6 @@ class User extends Authenticatable
      */
     public function details(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(UserDetails::class, 'user_id');
+        return $this->hasOne(UserDetail::class, 'user_id');
     }
 }

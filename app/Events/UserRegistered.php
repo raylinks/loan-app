@@ -14,14 +14,20 @@ class UserRegistered
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $user;
+    public $callback;
+
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param $user
+     * @param $callback_url
      */
-    public function __construct()
+    public function __construct($user, $callback_url)
     {
-        //
+        //dd($user);
+        $this->user = $user;
+        $this->callback = $callback_url;
     }
 
     /**
