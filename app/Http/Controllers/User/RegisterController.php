@@ -7,12 +7,14 @@ use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\UserRegistered;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
     
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
      
        //$this->validation($request);
@@ -22,20 +24,20 @@ class RegisterController extends Controller
         $user->details()->save((new UserDetail()));
 
         $callback_url = $request->callback_url;
-        
+
         event(new UserRegistered($user, $callback_url));
 
         return $this->okResponse('Registration successful.', []);
     }
 
-    private function create($request)
+    private function create($request): User
     {
         return  User::create([
             'first_name' => $request->firstname,
             'last_name' => $request->lastname,
             'email' => $request->email ,
-            'password' => $request->password,
-            'email_token' => Str::random(7),
+            'password' => Hash::make($request->password),
+            'email_token' => Str::random(10),
         ]);
     }
 

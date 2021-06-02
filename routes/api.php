@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\RegisterController;
+use App\Http\Controllers\User\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('register', [RegisterController::class, 'store']); 
+Route::post('verify-email', [EmailVerificationController::class, 'verifyEmailToken']);
+
+Route::group(['middleware' => 'auth:sanctum' ], function(){
+
+});
