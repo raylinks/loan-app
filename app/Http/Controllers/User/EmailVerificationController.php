@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 
-class RegisterController extends Controller
+class EmailVerificationController extends Controller
 {
 
     public function verifyEmailToken(Request $request): JsonResponse

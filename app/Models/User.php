@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetail::class, 'user_id');
     }
+
+    public function token(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Token::class, 'user_id');
+    }
 }

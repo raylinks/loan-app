@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Rules\ValidPassword;
 use Illuminate\Http\Request;
+use App\Models\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class ForgotPasswordController extends Controller
+class ResetPasswordController extends Controller
 {
 
     public function resetPassword(Request $request): JsonResponse
     {
-        $request->validate([
-            'token' => 'required|string',
-            'password' => ['required', 'string', 'confirmed', new ValidPassword()],
-        ]);
+        // $request->validate([
+        //     'token' => 'required|string',
+        //     'password' => ['required', 'string', 'confirmed', new ValidPassword()],
+        // ]);
 
         $reset = $this->verifyToken($request->token);
 

@@ -29,5 +29,4 @@ class EmailVerificationController extends Controller
        
     }
 
-
 }
