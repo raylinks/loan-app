@@ -28,6 +28,7 @@ class RegisterController extends Controller
         $callback_url = $request->callback_url;
 
         $sendOtp  = $this->sendOtp($user, $request);
+    
 
         //event(new UserRegistered($user, $callback_url));
 
@@ -64,7 +65,7 @@ class RegisterController extends Controller
 
     private function sendOtp($user ,$request)
     {
-        $user->token()->create([
+        $createdToken = $user->token()->create([
             'user_id' => $user->id,
             'token' => random_int(100000, 999999),
             'is_used' => false,
@@ -74,15 +75,16 @@ class RegisterController extends Controller
 
         $otp->channel = $request->channel ?: Otp::DEFAULT_SMS_CHANNEL;
 
-        $phone = $otp->formatPhone($user->phone_number, $user->id, Otp::DEFAULT_CODE);
+        $phone = $otp->formatPhone($user->phone_number, $user, Otp::DEFAULT_CODE);
 
         $text = sprintf(
             'Hi %s! Your OTP pin is %s. Please know that this OTP expires in 5 minutes.',
             $user->first_name,
-            $otp->token
+            $createdToken->token
         );
 
-        $otp->sendOtp($phone, $otp->token, $text, $user->first_name, $isRegistration = false);
+    $otpSuccess =  $otp->sendOtp($phone, $createdToken->token, $text, $user->first_name, $isRegistration = false);
+    return $otpSuccess;
     }
 
 }

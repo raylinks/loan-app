@@ -21,6 +21,7 @@ class RegisterSendOtp extends Mailable
      */
     public function __construct($data)
     {
+       // dd($data);
         $this->token = $data['token'];
         $this->user = $data['user'];
     }
@@ -32,7 +33,7 @@ class RegisterSendOtp extends Mailable
      */
     public function build(): self
     {
-        return $this->view('emails.register-send-otp-mail')
+        return $this->view('emails.register-send-otp')
             ->to($this->user->email)
             ->subject('Your OTP PIN')
             ->with([

@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ProcessOtpSuccess::class => [
             SendOtpEmailNotification::class,
-            SendOtpSmsNotification::class,
+          //  SendOtpSmsNotification::class,
         ],
     ];
 

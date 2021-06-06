@@ -18,12 +18,12 @@ class SendOtpSmsNotification implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ProcessOtpSuccess $event): void
-    {
-        (new TwilioGateway())->setMessageData(
-            $event->data['phone'],
-            $event->data['text'],
-            $event->data['channel']
-        )->send();
-    }
+    // public function handle(ProcessOtpSuccess $event): void
+    // {
+    //     (new TwilioGateway())->setMessageData(
+    //         $event->data['phone'],
+    //         $event->data['text'],
+    //         $event->data['channel']
+    //     )->send();
+    // }
 }
