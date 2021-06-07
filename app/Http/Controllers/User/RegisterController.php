@@ -13,26 +13,26 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
+use Exception;
 
 class RegisterController extends Controller
 {
     
     public function store(RegisterRequest $request): JsonResponse
     {
-     
-       $this->validation($request);
-
+       try{
         $user = $this->create($request);
        
         $user->details()->save((new UserDetail()));
-
-        $callback_url = $request->callback_url;
 
         $this->sendOtp($user, $request);
     
        // event(new UserRegistered($user, $callback_url));
 
-        return $this->okResponse('Registration successful.', []);
+        return $this->okResponse('Registration successful.', $user);
+       }catch(Exception $e){
+           abort(500, "Please try again later");
+       }
     }
 
     private function create($request): User
