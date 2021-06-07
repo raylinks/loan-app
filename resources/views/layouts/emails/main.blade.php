@@ -136,9 +136,9 @@
                                 <img src="{{ asset('images/logo_white.png') }}" width="100px" alt=""/>
                                 <div style="color:#f6f6f6">
                                     <p>Copyright © Lazy Nerd Limited, All rights reserved.</p>
-                                    <p style="font-size:17px">Our mailing address is: 2, Swisstrade Drive, Lekki - Epe Expreessway, Lagos 100211, Nigeria</p>
+                                    <p style="font-size:17px">company address</p>
                                     <br>
-                                    <small style="font-size:10px">You’re receiving this email from Lazy Nerd as a user who signed up, or make a buy or sell transaction.</small>
+                                    <small style="font-size:10px">You’re receiving this email from Lazy Nerd as a user who signed up</small>
                                     <br>
                                     <a href="#" target_blank="" style="text-decoration: none; color: #efefef;font-weight: bold;">
                                         Unsubscribe

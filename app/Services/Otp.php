@@ -4,7 +4,10 @@ namespace App\Services;
 
 use Throwable;
 use App\Models\User;
+use App\Mail\RegisterSendOtp;
+use App\Mail\PasswordResetMail;
 use App\Events\ProcessOtpSuccess;
+use Illuminate\Support\Facades\Mail;
 
 class Otp
 {
@@ -21,25 +24,28 @@ class Otp
 
     public function sendOTP($phone, $token, $text, $user, $isRegistration = false)
     {
+
         try {
             /*
              *User receives OTP in their email if they are registered already
              *@param user object email, UserOtp class, OTP token, User object
              */
-            if ($isRegistration) {
-                return null;
-            }
+            // if ($isRegistration) {
+            //     return null;
+            // }
 
-           $otp = event(new ProcessOtpSuccess([
+            event(new ProcessOtpSuccess([
                 'token' => $token,
                 'user' => $user,
                 'phone' => $phone,
                 'text' => $text,
-                'channel' => $this->channel,
+                'channel' => $this->channel,    
             ]));
+            
 
-             return $otp;
+            // return $otp;
         } catch (Throwable $e) {
+            dd($e);
             abort(503, 'Unable to validate information.');
         }
     }

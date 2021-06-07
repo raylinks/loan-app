@@ -33,12 +33,13 @@ class RegisterSendOtp extends Mailable
      */
     public function build(): self
     {
+      // dd('iii');
         return $this->view('emails.register-send-otp')
             ->to($this->user->email)
             ->subject('Your OTP PIN')
             ->with([
                 'token' => $this->token,
-                'username' => $this->user->username,
+                'firstname' => $this->user->first_name,
             ]);
     }
 }

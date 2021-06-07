@@ -12,6 +12,7 @@ use App\Events\UserRegistered;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
@@ -19,7 +20,7 @@ class RegisterController extends Controller
     public function store(Request $request): JsonResponse
     {
      
-      // $this->validation($request);
+       //$this->validation($request);
 
         $user = $this->create($request);
        
@@ -27,9 +28,8 @@ class RegisterController extends Controller
 
         $callback_url = $request->callback_url;
 
-        $sendOtp  = $this->sendOtp($user, $request);
+        $this->sendOtp($user, $request);
     
-
        // event(new UserRegistered($user, $callback_url));
 
         return $this->okResponse('Registration successful.', []);
@@ -83,8 +83,8 @@ class RegisterController extends Controller
             $createdToken->token
         );
 
-    $otpSuccess =  $otp->sendOtp($phone, $createdToken->token, $text, $user->first_name, $isRegistration = false);
-    return $otpSuccess;
+    $otpSuccess =  $otp->sendOtp($phone, $createdToken->token, $text, $user, $isRegistration = false);
+   // return $otpSuccess;
     }
 
 }

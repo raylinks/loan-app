@@ -25,7 +25,6 @@ class UserRegistered
      */
     public function __construct($user, $callback_url)
     {
-        //dd($user);
         $this->user = $user;
         $this->callback = $callback_url;
     }

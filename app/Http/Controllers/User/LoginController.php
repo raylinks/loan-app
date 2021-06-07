@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\AuthenticationException;
 
 class LoginController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
 
     public function login(Request $request): JsonResponse
     {

@@ -22,6 +22,7 @@ class SendOtpEmailNotification implements ShouldQueue
      */
     public function handle(ProcessOtpSuccess $event): void
     {
+
         Mail::send(new RegisterSendOtp($event->data));
     }
 }
