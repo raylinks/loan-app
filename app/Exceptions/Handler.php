@@ -2,11 +2,16 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Traits\HandleApiExceptions;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+    use HandleApiExceptions {
+        HandleApiExceptions::prepareApiException as prepApiException;
+    }
+    
     /**
      * A list of the exception types that are not reported.
      *
@@ -37,5 +42,65 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+     /**
+     * Report or log an exception.
+     *
+     * @param \Throwable $exception
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function report(Throwable $exception)
+    {
+        if (
+            app()->environment('production') &&
+            app()->bound('sentry') &&
+            $this->shouldReport($exception)
+        ) {
+            app('sentry')->captureException($exception);
+        }
+
+        parent::report($exception);
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable $exception
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function render($request, Throwable $exception)
+    {
+        return $this->renderApiResponse($request, $exception);
+    }
+
+    /**
+     * Prepare exception for API response rendering.
+     *
+     * @param \Throwable $exception
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Throwable
+     */
+    protected function prepareApiException(Throwable $exception, $request): Throwable
+    {
+        return $this->prepApiException($exception, $request);
+    }
+
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        $context = ['businessId' => optional(Auth::business())->id];
+
+        return array_merge(parent::context(), array_filter($context));
     }
 }

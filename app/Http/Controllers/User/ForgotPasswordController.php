@@ -17,9 +17,9 @@ class ForgotPasswordController extends Controller
 
     public function forgotPassword(Request $request): JsonResponse
     {
-        // $request->validate([
-        //     'email' => 'required|email',
-        // ]);
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
         if (! $user = User::firstWhere(['email' => $request->email])) {
             return $this->notFoundResponse('Email does not exist.');

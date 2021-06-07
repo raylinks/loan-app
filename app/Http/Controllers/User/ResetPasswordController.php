@@ -15,10 +15,10 @@ class ResetPasswordController extends Controller
 
     public function resetPassword(Request $request): JsonResponse
     {
-        // $request->validate([
-        //     'token' => 'required|string',
-        //     'password' => ['required', 'string', 'confirmed', new ValidPassword()],
-        // ]);
+        $request->validate([
+            'token' => 'required|string',
+            'password' => ['required', 'string', 'confirmed', new ValidPassword()],
+        ]);
 
         $reset = $this->verifyToken($request->token);
 

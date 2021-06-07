@@ -27,7 +27,8 @@ class LoginController extends Controller
         $response = [
             'user' => $user,
             'token' => $token,
-            'expires_at' => now()->addSeconds(auth()->factory()->getTTL() * 60)->timestamp,
+            'expires_at' => '',
+         //   'expires_at' => now()->addSeconds(auth()->factory()->getTTL() * 60)->timestamp,
         ];
         return $this->okResponse("Login successful", $response);
        

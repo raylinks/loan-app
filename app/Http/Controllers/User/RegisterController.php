@@ -17,10 +17,10 @@ use App\Http\Requests\RegisterRequest;
 class RegisterController extends Controller
 {
     
-    public function store(Request $request): JsonResponse
+    public function store(RegisterRequest $request): JsonResponse
     {
      
-       //$this->validation($request);
+       $this->validation($request);
 
         $user = $this->create($request);
        
@@ -48,21 +48,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    private function validation($request)
-    {
-        return $request->validate([
-            'firstname' => 'required|string|min:3|max:100',
-            'lastname' => 'required|string|min:3|max:100',
-            'email' => 'required|string|min:3|max:100',
-            'callback_url' => 'required|string',
-            'password' => ['required', 'string', 'confirmed', new ValidPassword()],
-          //  'date_of_birth' => ['required', 'date', 'before_or_equal:18 years ago'],
-            'phone_number' => 'required|string|unique:users',
-           // 'password.regex' => 'It must contain at least one uppercase letter, one lowercase letter, one number and one special char',
-
-        ]);
-    }
-
     private function sendOtp($user ,$request)
     {
         $createdToken = $user->token()->create([
@@ -84,7 +69,7 @@ class RegisterController extends Controller
         );
 
     $otpSuccess =  $otp->sendOtp($phone, $createdToken->token, $text, $user, $isRegistration = false);
-   // return $otpSuccess;
+   
     }
 
 }

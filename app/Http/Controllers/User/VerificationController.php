@@ -14,10 +14,14 @@ class VerificationController extends Controller
 {
     public function verifyOneTimePassword(Request $request): JsonResponse
     {
+
+        $request->validate([
+            'token' => 'required|string',
+        ]);
         $redirect = '';
 
         if (request()->redirect_callback) {
-            $redirect = base64_decode(request()->redirect_callback);
+            $redirect = base64_decode($request->redirect_callback);
         }
 
         $token = Token::where('token', $request->token)->first();
