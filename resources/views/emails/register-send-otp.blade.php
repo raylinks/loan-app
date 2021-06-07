@@ -3,7 +3,7 @@
 @section('content')
     @component('layouts.emails.components.table')
         @component('layouts.emails.components.table-row')
-         {{$firstname}}
+        <p>  Hi {{$firstname}}  </p>
         @endcomponent
 
         @component('layouts.emails.components.table-row')
