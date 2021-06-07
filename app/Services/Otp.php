@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Exception;
 use Throwable;
 use App\Models\User;
 use App\Events\ProcessOtpSuccess;

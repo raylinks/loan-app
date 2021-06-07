@@ -21,7 +21,7 @@ class RegisterSendOtp extends Mailable
      */
     public function __construct($data)
     {
-       // dd($data);
+        //dd($data);
         $this->token = $data['token'];
         $this->user = $data['user'];
     }

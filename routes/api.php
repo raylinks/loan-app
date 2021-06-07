@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\ResetPasswordController;
@@ -24,6 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('register', [RegisterController::class, 'store']); 
+Route::post('login', [LoginController::class, 'login']); 
 Route::post('verify-email', [VerificationController::class, 'verifyEmailToken']);
 Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);

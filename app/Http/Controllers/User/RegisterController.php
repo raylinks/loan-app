@@ -19,7 +19,7 @@ class RegisterController extends Controller
     public function store(Request $request): JsonResponse
     {
      
-       //$this->validation($request);
+      // $this->validation($request);
 
         $user = $this->create($request);
        
@@ -30,7 +30,7 @@ class RegisterController extends Controller
         $sendOtp  = $this->sendOtp($user, $request);
     
 
-        //event(new UserRegistered($user, $callback_url));
+       // event(new UserRegistered($user, $callback_url));
 
         return $this->okResponse('Registration successful.', []);
     }

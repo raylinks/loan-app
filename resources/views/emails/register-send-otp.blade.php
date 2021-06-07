@@ -1,4 +1,5 @@
 @component('mail::message')
+{{ dump($user->first_name) }}
 <p> Hi {{ $user->first_name }} {{ $user->last_name }}, </p>
 <p>  Please find your OTP PIN below. This OTP is valid for the next 5 minutes. <strong>   {{$token}}</strong></p>
 @component('mail::button', ['url' => config('settings.frontend_url') . '/reset-password?' . $urlQuery])
