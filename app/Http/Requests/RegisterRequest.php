@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
         return [
             'firstname' => 'required|string|min:3|max:100',
             'lastname' => 'required|string|min:3|max:100',
-            'email' => 'required|string|min:3|max:100',
+            'email' => 'required|email:filter|max:255|unique:users',
             'callback_url' => 'required|string',
             'password' => ['required', 'string', 'confirmed', new ValidPassword()],
           //  'date_of_birth' => ['required', 'date', 'before_or_equal:18 years ago'],
