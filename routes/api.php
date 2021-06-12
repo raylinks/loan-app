@@ -4,10 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
-use App\Http\Controllers\User\BvnVerificationController;
+use App\Http\Controllers\User\BlacklistController;
 use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
+use App\Http\Controllers\User\BvnVerificationController;
 use App\Http\Controllers\User\EmailVerificationController;
 
 /*
@@ -33,9 +34,10 @@ Route::post('reset-password', [ResetPasswordController::class, 'resetPassword'])
 Route::post('verify-otp', [VerificationController::class, 'verifyOneTimePassword']);
 
 Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
+Route::post('search-with-bvn', [BlacklistController::class, 'store']);
 
 Route::group(['middleware' => 'auth:sanctum' ], function(){
 
-
+//->middleware('auth:sanctum');
 
 });

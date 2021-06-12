@@ -17,7 +17,7 @@ class ResetPasswordController extends Controller
     {
         $request->validate([
             'token' => 'required|string',
-            'password' => ['required', 'string', 'confirmed', new ValidPassword()],
+            //'password' => ['required', 'string', 'confirmed', new ValidPassword()],
         ]);
 
         $reset = $this->verifyToken($request->token);
