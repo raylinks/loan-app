@@ -34,4 +34,11 @@ class LoginController extends Controller
        
     }
 
+    // public function logout()
+    // {
+    //     auth()->user()->token()->delete();
+
+    //     return $this->okResponse("Logged out  successful", []);
+    // }
+
 }
