@@ -33,9 +33,7 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
 Route::post('verify-otp', [VerificationController::class, 'verifyOneTimePassword']);
 
-// Route::middleware( 'auth:sanctum' )->get('/user', function(){
-
-// });
+//Authenticated routes
 Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);

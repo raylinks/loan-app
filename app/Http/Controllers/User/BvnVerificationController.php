@@ -7,9 +7,7 @@ use App\Models\BvnVerification;
 use App\Http\Clients\Flutterwave;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Actions\BvnVerification\VerifyBvnWithSmileKyc;
-use App\Http\Actions\BvnVerification\VerifyBvnWithTrustpay;
-use App\Http\Actions\BvnVerification\VerifyBvnWithFlutterwave;
+
 
 class BvnVerificationController extends Controller
 {
@@ -26,37 +24,26 @@ class BvnVerificationController extends Controller
     {
         $request->validate(['bvn' => 'required|numeric|digits:11']);
 
-        // $userId = auth()->user()->current_business_id;
+         $bvnStatus = BvnVerification::where('user_id', auth()->user()->id)->exists();
 
-        // $bvnStatus = BvnVerification::where('user_id', $userId)->exists();
+        if ($bvnStatus) {
+            return $this->badRequestResponse('The BVN for this user has been verified already');
+        }
 
-        // if ($bvnStatus) {
-        //     return $this->badRequestResponse('The BVN for this user has been verified already');
-        // }
-       // dd('bvn is here');
         $response =   (new Flutterwave())->verifyBvn($request->bvn); 
         dd($response);
 
-        // if (! is_array($response)) {
-        //     return $this->clientErrorResponse('Your bvn is invalid. Kindly confirm the number and try again.');
-        // }
+        if (! is_array($response)) {
+            return $this->clientErrorResponse('Your bvn is invalid. Kindly confirm the number and try again.');
+        }
 
-        return $this->createdResponse('Bvn details was successfully added', $this->create($response, $request, $businessId));
+        return $this->createdResponse('Bvn details was successfully added', $this->create($response, $request));
     }
 
-    /**
-     *  Creates bvn records in the database.
-     *
-     * @param $response
-     * @param $request
-     * @param int $businessId
-     *
-     * @returns void
-     */
-    private function create($response, $request, int $businessId)
+    private function create($response, $request)
     {
         return BvnVerification::create([
-            'business_id' => $businessId,
+            'user_id' => auth()->user()->id,
             'bvn' => $request->bvn,
             'email' => $response['email'],
             'first_name' => $response['first_name'],
