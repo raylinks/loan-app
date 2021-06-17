@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Token::class, 'user_id');
     }
+
+    public function bvn()
+    {
+        return $this->hasOne(BvnVerification::class, 'user_id');
+    }
 }

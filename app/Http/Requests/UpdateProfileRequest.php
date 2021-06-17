@@ -30,7 +30,7 @@ class UpdateProfileRequest extends FormRequest
             'cuurent_employment' => 'required|string',
             'occupation' =>  'required|string',
             'years_of_employment' =>  'required|string',
-            'monthly income' => 'required|numeric|digits:11',
+            'monthly_income' => 'required|numeric|digits:11',
             'profile_picture' => 'required|string|min:3|max:100',
         ];
     }

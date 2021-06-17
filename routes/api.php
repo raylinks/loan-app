@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\LoginController;
+use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\BlacklistController;
 use App\Http\Controllers\User\VerificationController;
@@ -37,6 +38,6 @@ Route::post('verify-otp', [VerificationController::class, 'verifyOneTimePassword
 Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
-
+    Route::post('account-number', [AccountController::class, 'createAccountNumber']);
 
 }); 

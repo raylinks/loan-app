@@ -36,30 +36,7 @@ class Blacklist
         if (Str::contains(strtolower($message), 'not available')) {
             abort('please try again');
         }
-   
     }
 
-    return $this->formatBvnDetails($verifyBvn);
-    }
-
-    /**
-     * Retrieve the details of a response for a particular bvn.
-     *
-     * @param array $verifyBvn
-     *
-     * @return array
-     */
-    public function formatBvnDetails($verifyBvn)
-    {
-        $bvnDetails = [];
-        $bvnDetails['first_name'] = ucfirst(strtolower(trim($verifyBvn['data']['first_name'])));
-        $bvnDetails['last_name'] = ucfirst(strtolower(trim($verifyBvn['data']['last_name'])));
-        $bvnDetails['email'] = validator(['email' => $verifyBvn['data']['email']], ['email' => 'string|email'])->passes() ? $verifyBvn['data']['email'] : null;
-        $bvnDetails['date_of_birth'] = $verifyBvn['data']['date_of_birth'] ?? null;
-        $bvnDetails['phone'] = substr_replace(($verifyBvn['data']['phone_number']) ? PhoneNumber::make($verifyBvn['data']['phone_number'], 'NG') : '', ' + 234', 0, 1);
-        $bvnDetails['enrollmentBank'] = trim($verifyBvn['data']['enrollment_bank']);
-        $bvnDetails['enrollmentBankBranch'] = trim($verifyBvn['data']['enrollment_branch']);
-
-        return $bvnDetails;
     }
 }

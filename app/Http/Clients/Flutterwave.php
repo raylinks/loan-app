@@ -74,4 +74,17 @@ class Flutterwave
 
         return $bvnDetails;
     }
+
+    public function getAccountName(string $account_number, string $bank_code)
+    {
+        $response = $this->post('gpx/transfers/beneficiaries/create', [
+            'json' => [
+                'account_number' => $account_number,
+                'account_bank' => $bank_code,
+                'seckey' => config('flutterwave.secretKey'),
+            ],
+        ]);
+
+        return $response;
+    }
 }
