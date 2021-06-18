@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserStatementUploadsTable extends Migration
+class CreateCustomBankAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateUserStatementUploadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_statement_uploads', function (Blueprint $table) {
+        Schema::create('custom_bank_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('statement_one');
-            $table->string('statement_two')->nullable();
-            $table->string('statement_three')->nullable();
+            $table->string('account_number');
+            $table->string('account_name');
+            $table->string('bvn');
+            $table->string('email');
+            $table->string('customer_name');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateUserStatementUploadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_statement_uploads');
+        Schema::dropIfExists('custom_bank_accounts');
     }
 }
