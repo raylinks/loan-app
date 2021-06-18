@@ -9,35 +9,60 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
 class Monnify
-{   
+{
     protected PendingRequest $client;
 
     public function __construct()
     {
-        $this->client = Http::withHeaders(['Authorization' =>   'Basic'  . rtrim(strtr(base64_encode(config('monnify.api_key').':'.config('monnify.secret_key')),'+/', '-_'), '=')])
-            ->baseUrl(config('blacklist.base_url'));
+        $this->client = Http::withHeaders(['Authorization' =>   'Bearer'  .  $this->token])
+            ->baseUrl(config('monnify.base_url'));
     }
 
-    public function createCustomAccount()
+    public function initiateRepayment()
     {
-        $requestData = $this->accountPayload();
-        $res =  $this->client->post('/api/v2/bank-transfer/reserved-accounts', $requestData)->throw()->json();
+        $requestData = $this->initiatePayload();
+        $res =  $this->client->post('v1/merchant/transactions/init-transaction', $requestData)->throw()->json();
         dd($res);
     }
 
-    protected function accountPayload()
+    public function payWithcard()
+    {
+        $requestData = $this->cardPayload();
+        $res =  $this->client->post('v1/merchant/cards/charge', $requestData)->throw()->json();
+        dd($res);
+    }
+
+    protected function initiatePayload()
     {
         $ref = md5(Str::random(20));
 
         return [
-            'accountReference' => $ref,
-            'accountName' => "CredBolt",
-            'currencyCode' => "NGN",
-            'contractCode' => "1234",
-            'customerEmail' => auth()->user()->email,
-            'bvn' => "2221560913",
-            'customerName' => auth()->user()->first_name,
-            'getAllAvailableBanks' => true,
+            "amount" => 100.00,
+            "customerName" => "Stephen Ikhane",
+            "customerEmail" => "stephen@ikhane.com",
+            "paymentReference" => "123031klsadkad",
+            "paymentDescription" => "Trial transaction",
+            "currencyCode" => "NGN",
+            "contractCode" => config('monnify.contract-code'),
+            "redirectUrl" => "https://my-merchants-page.com/transaction/confirm",
+            "paymentMethods" => ["CARD","ACCOUNT_TRANSFER"]
+        ];
+    }
+
+    protected function cardPayload()
+    {
+        $ref = md5(Str::random(20));
+
+        return [
+            "amount" => 100.00,
+            "customerName" => "Stephen Ikhane",
+            "customerEmail" => "stephen@ikhane.com",
+            "paymentReference" => "123031klsadkad",
+            "paymentDescription" => "Trial transaction",
+            "currencyCode" => "NGN",
+            "contractCode" => config('monnify.contract-code'),
+            "redirectUrl" => "https://my-merchants-page.com/transaction/confirm",
+            "paymentMethods" => ["CARD","ACCOUNT_TRANSFER"]
         ];
     }
 }

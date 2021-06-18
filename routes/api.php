@@ -6,6 +6,7 @@ use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\BlacklistController;
+use App\Http\Controllers\User\InitiateRepaymentController;
 use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\CreateAccountController;
 use App\Http\Controllers\User\ResetPasswordController;
@@ -28,8 +29,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', [RegisterController::class, 'store']); 
-Route::post('login', [LoginController::class, 'login']); 
+Route::post('register', [RegisterController::class, 'store']);
+Route::post('login', [LoginController::class, 'login']);
 //Route::post('verify-email', [VerificationController::class, 'verifyEmailToken']);
 Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
@@ -40,7 +41,8 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
-    
 
-}); 
+
+});
 Route::post('account-creation', [CreateAccountController::class, 'store']);
+Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);

@@ -8,4 +8,6 @@ return [
 
     'base_url' => env('MONNIFY_BASE_URL'),
 
+    'contract_code' => env('CONTRACT_CODE'),
+
 ];
