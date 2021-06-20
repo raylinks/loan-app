@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentReferencesTable extends Migration
+class CreateReferencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreatePaymentReferencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_references', function (Blueprint $table) {
+        Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('amount');
-            $table->string('reference');
+            $table->string('payment_reference');
+            $table->string('transaction_reference');
             $table->string('status');
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ class CreatePaymentReferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_references');
+        Schema::dropIfExists('references');
     }
 }

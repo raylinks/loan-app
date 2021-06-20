@@ -8,6 +8,7 @@ use App\Models\Repayment;
 use App\Models\WalletType;
 use App\Models\Transaction;
 use App\Support\Currencies;
+use Illuminate\Support\Str;
 use App\Models\CryptoWallet;
 use App\Http\Clients\Monnify;
 use App\Contracts\CryptoClient;
@@ -24,9 +25,14 @@ class InitiateRepaymentAction
 {
     public function execute($request)
     {
-         PaymentReference::create([
+        $ref = $this->generateRef();
+
+        $transRef = md5(Str::random(20));
+
+         Reference::create([
             'user_id' => auth()->user()->id,
-            'refwerence' => PaymentReference::generateCode(),
+            'payment_reference' => $ref,
+            'transaction_reference' => $transRef,
             'amount' => $request->amount,
             'status' => PaymentReference::STATUSES['PENDING'],
             'transaction_type' => PaymentReference::TYPES['REPAYMENT'],
@@ -48,7 +54,21 @@ class InitiateRepaymentAction
         ]);
 
 
-        $response = (new Monnify())->payWithCard();
+        $response = (new Monnify())->initiateRepayment($request->amount, $ref);
 
+    }
+
+    public function generateRef()
+    {
+        $ref = time() . '_' . uniqid();
+
+        // Ensure that the reference has not been used previously
+        $validator = \Validator::make(['ref' => $ref], ['ref' => 'unique:payment_references,reference']);
+
+        if ($validator->fails()) {
+            return $this->generateRef();
+        }
+
+        return $ref;
     }
 }

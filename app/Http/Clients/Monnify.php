@@ -3,9 +3,11 @@
 namespace App\Http\Clients;
 
 use Exception;
+use App\Models\Reference;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Validator;
 use Illuminate\Http\Client\PendingRequest;
 
 class Monnify
@@ -18,9 +20,9 @@ class Monnify
             ->baseUrl(config('monnify.base_url'));
     }
 
-    public function initiateRepayment()
+    public function initiateRepayment($amount, $ref)
     {
-        $requestData = $this->initiatePayload();
+        $requestData = $this->initiatePayload($amount, $ref);
         $res =  $this->client->post('v1/merchant/transactions/init-transaction', $requestData)->throw()->json();
         dd($res);
     }
@@ -32,15 +34,14 @@ class Monnify
         dd($res);
     }
 
-    protected function initiatePayload()
+    protected function initiatePayload($amount, $ref)
     {
-        $ref = md5(Str::random(20));
 
         return [
-            "amount" => 100.00,
-            "customerName" => "Stephen Ikhane",
-            "customerEmail" => "stephen@ikhane.com",
-            "paymentReference" => "123031klsadkad",
+            "amount" => $amount,
+            "customerName" => "raymond ray",
+            "customerEmail" => "ray@gmail.com",
+            "paymentReference" => $ref,
             "paymentDescription" => "Trial transaction",
             "currencyCode" => "NGN",
             "contractCode" => config('monnify.contract-code'),
@@ -51,18 +52,20 @@ class Monnify
 
     protected function cardPayload()
     {
-        $ref = md5(Str::random(20));
+        $trans = Reference::where('user_id',auth()->user()->id)->where('status', false)->first();
 
         return [
-            "amount" => 100.00,
-            "customerName" => "Stephen Ikhane",
-            "customerEmail" => "stephen@ikhane.com",
-            "paymentReference" => "123031klsadkad",
-            "paymentDescription" => "Trial transaction",
-            "currencyCode" => "NGN",
-            "contractCode" => config('monnify.contract-code'),
-            "redirectUrl" => "https://my-merchants-page.com/transaction/confirm",
-            "paymentMethods" => ["CARD","ACCOUNT_TRANSFER"]
+            "transactionReference" => $trans->transaction_reference,
+            "collectionChannel" => "API_NOTIFICATION",
+    // "card": {
+    //     "number": "5061040000000000215",
+    //     "expiryMonth": "09",
+    //     "expiryYear": "2022",
+    //     "pin": "1234",
+    //     "cvv": "122"
+    // }
         ];
     }
+
+   
 }
