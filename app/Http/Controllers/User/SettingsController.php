@@ -8,14 +8,13 @@ use App\Http\Clients\Flutterwave;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\CreateProfileRequest;
 
 
 class SettingsController extends Controller
 {
 
-
-    public function updateProfile(UpdateProfileRequest $request)
+    public function createProfile(CreateProfileRequest $request)
     {
        $user = User::where('id' ,auth()->user()->id)->first();
   
@@ -29,7 +28,7 @@ class SettingsController extends Controller
             'monthly_income' => $request->monthly_income,
        ]);
 
-       return $this->okResponse('Profile updated successfully', $profile );
+       return $this->okResponse('Profile created successfully', $profile );
        
     }
 
@@ -46,11 +45,13 @@ class SettingsController extends Controller
     public function getAccountName(Request $request)
     {
         $request->validate([
-            'account_number' => '',
-            'bank_code' => '',
+            'account_number' => 'required|string|max:10|min:10',
+            'bank_code' => 'required|string|max:10|exists:banks,code',
         ]);
         
         $result = (new Flutterwave())->getAccountName($request->account_number, $request->bank_code);
+
+        return $this->okResponse('Account name  retrieved successfully', $result );
     }
 
     public function createUserBankAccount()

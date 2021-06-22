@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
+    Route::post('create-profile', [SettingsController::class, 'createProfile']);
 
 
 });
