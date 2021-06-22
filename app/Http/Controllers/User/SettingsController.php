@@ -17,20 +17,19 @@ class SettingsController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request)
     {
-       $user = User::where('id',auth()->user()->id)->first();
-       dd($user);
-       $user->details->create([
-            'title' => '',
-            'marital_status' => '',
-            'address' => '',
-            'cuurent_employment' => '',
-            'occupation' => '',
-            'years_of_employment' => '',
-            'monthly_income' => '',
-            'profile_picture' => ''
+       $user = User::where('id' ,auth()->user()->id)->first();
+  
+       $profile = $user->details->create([
+            'title' => $request->title,
+            'marital_status' => $request->marital_status,
+            'address' => $request->address,
+            'cuurent_employment' => $request->cuurent_employment,
+            'occupation' => $request->occupation,
+            'years_of_employment' => $request->years_of_employment,
+            'monthly_income' => $request->monthly_income,
        ]);
 
-       return $this->okResponse('Bvn details was successfully added');
+       return $this->okResponse('Profile updated successfully', $profile );
        
     }
 
