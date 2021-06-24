@@ -20,4 +20,4 @@ Route::get('/', function () {
 
 //Route::view('dashboard', 'admin.index');
 
-Route::view('/admin123', 'admin.index')->name('dashboard');
+Route::view('/dashboard', 'admin.index')->name('dashboard');

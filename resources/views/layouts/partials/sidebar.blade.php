@@ -49,12 +49,12 @@
                 
                 <li class="nav-item nav-item-submenu">
                     <a href="" class="nav-link" id="business">
-                        <i class="icon-briefcase"></i> <span>Doctors</span>
+                        <i class="icon-briefcase"></i> <span>Loan requests</span>
                     </a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Businesses">
                         <li class="nav-item">
-                            <a href="" class="nav-link">View doctors</a>
+                             <a href="" class="nav-link">View loans</a> 
                         </li>
                     </ul>
                 </li>
