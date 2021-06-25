@@ -98,10 +98,10 @@ class Handler extends ExceptionHandler
      *
      * @return array
      */
-    protected function context()
-    {
-        $context = ['businessId' => optional(Auth::business())->id];
+    // protected function context()
+    // {
+    //     $context = ['businessId' => optional(Auth::business())->id];
 
-        return array_merge(parent::context(), array_filter($context));
-    }
+    //     return array_merge(parent::context(), array_filter($context));
+    // }
 }
