@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Throwable;
 use App\Traits\HandleApiExceptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
