@@ -24,13 +24,14 @@ class CreateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|min:3|max:100',
-            'marital_status' => 'required|string|min:3|max:100',
+            'title' => 'required|string|min:2|max:10',
+            'marital_status' => 'required|string',
+            'date_of_birth' => [ 'date', 'before_or_equal:18 years ago'],
             'address' => 'required|string|max:255',
-            'cuurent_employment' => 'required|string',
+            'current_employment' => 'required|string',
             'occupation' =>  'required|string',
-            'years_of_employment' =>  'required|string',
-            'monthly_income' => 'required|numeric|digits:11',
+            'years_of_employment' =>  'required|numeric|min:1|max:2',
+            'monthly_income' => 'required|string',
             //'profile_picture' => 'required|string|min:3|max:100',
         ];
     }

@@ -93,15 +93,4 @@ class Handler extends ExceptionHandler
         return $this->prepApiException($exception, $request);
     }
 
-    /**
-     * Get the default context variables for logging.
-     *
-     * @return array
-     */
-    // protected function context()
-    // {
-    //     $context = ['businessId' => optional(Auth::business())->id];
-
-    //     return array_merge(parent::context(), array_filter($context));
-    // }
 }

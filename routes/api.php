@@ -8,7 +8,7 @@ use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\BlacklistController;
 use App\Http\Controllers\User\InitiateRepaymentController;
 use App\Http\Controllers\User\VerificationController;
-use App\Http\Controllers\User\CreateAccountController;
+use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
 use App\Http\Controllers\User\BvnVerificationController;
@@ -42,8 +42,9 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
+   // Route::post('account-creation', [CreateAccountController::class, 'store']);
 
 
 });
-Route::post('account-creation', [CreateAccountController::class, 'store']);
+
 Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);

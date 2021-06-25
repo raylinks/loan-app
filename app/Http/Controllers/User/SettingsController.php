@@ -17,12 +17,13 @@ class SettingsController extends Controller
     public function createProfile(CreateProfileRequest $request)
     {
        $user = User::where('id' ,auth()->user()->id)->first();
-  
-       $profile = $user->details->create([
+       
+       $profile = $user->details->update([
             'title' => $request->title,
             'marital_status' => $request->marital_status,
+            'date_of_birth' => $request->date_of_birth,
             'address' => $request->address,
-            'cuurent_employment' => $request->cuurent_employment,
+            'current_employment' => $request->current_employment,
             'occupation' => $request->occupation,
             'years_of_employment' => $request->years_of_employment,
             'monthly_income' => $request->monthly_income,
