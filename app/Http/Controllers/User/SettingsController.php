@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\UserBankAccount;
 use App\Http\Clients\Flutterwave;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class SettingsController extends Controller
     public function createProfile(CreateProfileRequest $request)
     {
        $user = User::where('id' ,auth()->user()->id)->first();
-       
+
        $profile = $user->details->update([
             'title' => $request->title,
             'marital_status' => $request->marital_status,
@@ -55,9 +56,40 @@ class SettingsController extends Controller
         return $this->okResponse('Account name  retrieved successfully', $result );
     }
 
-    public function createUserBankAccount()
+    public function createUserBankAccount(Request $request)
     {
+        $request->validate([
+            'account_number' => 'required|string|max:10|min:10',
+            'bank_code' => 'required|string|max:10|exists:banks,code'
+        ]);
         # code...
+        //check if user already has bank account
+
+        $bankAccount = UserBankAccount::where(['account_number' => $request->account_number])->exists(); 
+
+        if($bankAccount){
+            return $this->forbiddenResponse('This account number has been registered already');
+        } 
+
+        $result = (new Flutterwave())->getAccountName($request->account_number, $request->bank_code);
+
+        if ($result['status'] === 200) {
+            $enquiry_result = ['data' => ['statuscode' => '00', 'data' => [
+                'accountName' => data_get($result, 'data.data.fullname'),
+                'accountNumber' => data_get($result, 'data.data.account_number'),
+            ]]];
+        }
+
+        $user = User::where('id', auth()->user()->id)->first();
+
+        $user->bankAccount->create([
+            ''
+
+        ]);
+
+
+
+
     }
 
 

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\AuthenticationException;
+use App\Http\Resources\LoginResource;
 
 class LoginController extends Controller
 {
@@ -29,14 +30,10 @@ class LoginController extends Controller
             return $this->notFoundResponse("The credentials do not match our record ", $user);
         }
         $token  = $user->createToken('my-app-token')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token,
-            'expires_at' => '',
-         //   'expires_at' => now()->addSeconds(auth()->factory()->getTTL() * 60)->timestamp,
-        ];
-        return $this->okResponse("Login successful", $response);
+     
+        return $this->okResponse('Login successfully', [  
+             'token' => $token,
+             'user' => (new LoginResource($user))->toArray($request)]);
        
     }
 

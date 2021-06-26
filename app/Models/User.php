@@ -65,4 +65,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(BvnVerification::class, 'user_id');
     }
+
+    public function bankAccount()
+    {
+        return $this->hasOne(UserBankAccount::class, 'user_id');
+    }
+
+    public function userWallet()
+    {
+        return $this->hasOne('App\Models\UserWallet');
+    }
 }

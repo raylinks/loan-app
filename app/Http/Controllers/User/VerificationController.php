@@ -35,7 +35,7 @@ class VerificationController extends Controller
             $user->update(['registration_completed' => true]);
             $token->delete();
 
-        
+         // event(new UserRegistered($user, $callback_url));
             return $this->okResponse('Your phone number has been verified', []);
         }
         return $this->forbiddenResponse("Sorry Your OTP has expired.', 'expired_otp");

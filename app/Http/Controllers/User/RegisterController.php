@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Exception;
 use App\Models\User;
 use App\Services\Otp;
 use App\Models\UserDetail;
@@ -10,25 +11,28 @@ use App\Rules\ValidPassword;
 use Illuminate\Http\Request;
 use App\Events\UserRegistered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
-use Exception;
 
 class RegisterController extends Controller
 {
     
     public function store(RegisterRequest $request): JsonResponse
     {
+        DB::beginTransaction();
        try{
+
         $user = $this->create($request);
        
         $user->details()->save((new UserDetail()));
 
+        $user->userWallet()->create();
+
         $this->sendOtp($user, $request);
     
-       // event(new UserRegistered($user, $callback_url));
-
+       DB::commit();
         return $this->okResponse('Registration successful.', $user);
        }catch(Exception $e){
            abort(500, "Please try again later");
@@ -45,6 +49,11 @@ class RegisterController extends Controller
             'phone_number' => $request->phone_number,
             'email_token' => Str::random(10),
             'registration_completed' => false
+        ]);
+
+        $create_wallet = UserWallet::create([
+            'uuid' => Str::orderedUuid(),
+            'user_id' => $user->id,
         ]);
     }
 

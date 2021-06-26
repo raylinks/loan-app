@@ -17,7 +17,7 @@ class Flutterwave
 
     public function __construct()
     {
-       // dd(config('flutterwave.secret_key'));
+      //  dd(config('flutterwave.payment_url'));
         $this->client = Http::withHeaders(['Authorization' => 'Bearer '.config('flutterwave.secret_key')])
             ->baseUrl(config('flutterwave.payment_url'));
     }
