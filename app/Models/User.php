@@ -22,6 +22,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'loan_eligible_id',
         'email_token',
         'phone_number',
         'registration_completed'
@@ -74,5 +75,10 @@ class User extends Authenticatable
     public function userWallet()
     {
         return $this->hasOne('App\Models\UserWallet');
+    }
+
+    public function loanEligible()
+    {
+        return  $this->belongsTo(LoanEligible::class, 'loan_eligible_id');
     }
 }

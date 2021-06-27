@@ -34,7 +34,9 @@ class RegisterController extends Controller
     
        DB::commit();
         return $this->okResponse('Registration successful.', $user);
+        
        }catch(Exception $e){
+        DB::rollBack();
            abort(500, "Please try again later");
        }
     }
@@ -48,12 +50,8 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'phone_number' => $request->phone_number,
             'email_token' => Str::random(10),
-            'registration_completed' => false
-        ]);
-
-        $create_wallet = UserWallet::create([
-            'uuid' => Str::orderedUuid(),
-            'user_id' => $user->id,
+            'registration_completed' => false,
+            'loan_eligible_id' => 1
         ]);
     }
 

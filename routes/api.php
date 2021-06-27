@@ -2,17 +2,18 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\LoanController;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\RegisterController;
-use App\Http\Controllers\User\BlacklistController;
-use App\Http\Controllers\User\InitiateRepaymentController;
-use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\SettingsController;
+use App\Http\Controllers\User\BlacklistController;
+use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
 use App\Http\Controllers\User\BvnVerificationController;
 use App\Http\Controllers\User\EmailVerificationController;
+use App\Http\Controllers\User\InitiateRepaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
+    Route::post('loan-eligibility', [LoanController::class, 'checkEligibility']);
+    Route::post('loan-request', [LoanController::class, 'store']);
+    
    // Route::post('account-creation', [CreateAccountController::class, 'store']);
 
 
