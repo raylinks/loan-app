@@ -21,4 +21,19 @@ class LoanRequest extends Model
         'ABANDONED' => 'abandoned',
     ];
 
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function respondedBy()
+    {
+        return $this->belongsTo(User::class, 'responded_by');
+    }
+
 }

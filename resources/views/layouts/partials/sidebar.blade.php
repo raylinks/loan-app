@@ -54,7 +54,7 @@
 
                     <ul class="nav nav-group-sub" data-submenu-title="Businesses">
                         <li class="nav-item">
-                             <a href="" class="nav-link">View loans</a> 
+                             <a href="{{ route('loan-requests.index')}}" class="nav-link">View loans</a> 
                         </li>
                     </ul>
                 </li>

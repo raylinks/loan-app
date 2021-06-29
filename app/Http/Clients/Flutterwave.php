@@ -3,11 +3,16 @@
 namespace App\Http\Clients;
 
 use Exception;
+use Throwable;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Traits\HasBvnProviderResponse;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class Flutterwave
 {
@@ -75,16 +80,36 @@ class Flutterwave
         return $bvnDetails;
     }
 
-    public function getAccountName(string $account_number, string $bank_code)
+    public function getAccountName(array $data): array
     {
-        $response = $this->post('gpx/transfers/beneficiaries/create', [
-            'json' => [
-                'account_number' => $account_number,
-                'account_bank' => $bank_code,
+        try{
+            $data = [
+                'account_number' => $data['account_number'],
+                'bank_code' => $data['bank_code'],
                 'seckey' => config('flutterwave.secretKey'),
-            ],
-        ]);
+            ];
+        
+         return $this->client->post('gpx/transfers/beneficiaries/create', $data)->throw()->json();
+        
+        }catch (Throwable $e) {
+           // $this->handleInvalidAccountNumber($e);
+            $this->handleException($e);
+        }
+;
+    }
 
-        return $response;
+    private function handleException(Exception $exception, ?string $message = null)
+    {
+        report($exception);
+
+        if ($exception instanceof RequestException && $exception->response->status() === 503) {
+            $message = 'Our service is currently not available.';
+        }
+
+        throw new ServiceUnavailableHttpException(
+            null,
+            $message ?? 'Unable to validate account name information.',
+            $exception
+        );
     }
 }
