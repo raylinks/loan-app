@@ -9,4 +9,6 @@ class LoanEligible extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'amount', 'range_from', 'range_to'];
+
 }

@@ -2,32 +2,36 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\LoanEligible;
 use Illuminate\Http\Request;
-use App\Models\LoanEligibility;
+
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Actions\LoanRequestAction;
 
 class LoanController extends Controller
 {
     public function checkEligibility(Request $request)
     {
-        $request->validate(['amount' => 'required|numeric|min:1|max:10000']);
+        $request->validate(['amount' => 'required|numeric|min:1|max:100000']);
 
-        $user = User::with('loanEligible')->where('id', auth()->user()->id)->first();
+        $totalPaid = Auth::user()->eligible_amount;
+        
+        $loan = LoanEligible::where('range_to', '>=', $totalPaid)->where('range_from', '<=', $totalPaid)->value('amount');
 
-        $rangeFrom = $user->loanEligible->range_from;
-        $rangeTo = $user->loanEligible->range_to;
-
-        if( $request->amount >= $rangeFrom && $request->amount <= $rangeTo)
+        if ($request->amount > $loan)
         {
-           return $this->okResponse("You are eligible to borrow ",$request->amount);
+            return $this->badRequestResponse("Sorry you are yet to qualify to borrow {$request->amount} ");
+           
         }
-        return $this->badRequestResponse("Sorry you are yet to qualify to borrow {$request->amount} ");
+        return $this->okResponse("you are eligible to borrow {$request->amount}");
+      
+    
     }
 
     public function store(Request $request)
     {
-        $request->validate(['amount' => 'required|numeric|min:1|max:10000']);
+        $request->validate(['amount' => 'required|numeric|min:1|max:100000']);
 
        $response = (new LoanRequestAction())->execute($request);
 

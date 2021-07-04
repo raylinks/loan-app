@@ -50,8 +50,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'phone_number' => $request->phone_number,
             'email_token' => Str::random(10),
-            'registration_completed' => false,
-            'loan_eligible_id' => 1
+            'registration_completed' => false
         ]);
     }
 

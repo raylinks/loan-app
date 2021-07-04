@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('loan_eligible_id')->constrained('loan_eligibles');
+            $table->decimal('eligible_amount', 15, 2)->default(5000.00);
             $table->string('api_token')->nullable();
             $table->string('email_token');
             $table->boolean('registration_completed');
