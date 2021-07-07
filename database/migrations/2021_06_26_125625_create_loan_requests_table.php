@@ -18,7 +18,6 @@ class CreateLoanRequestsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('amount', 15, 2)->default(0.00);
             $table->foreignId('transaction_id')->constrained('transactions');
-            $table->foreignId('loan_eligible_id')->constrained('loan_eligibles');
             $table->string('status');
             $table->timestamps();
         });

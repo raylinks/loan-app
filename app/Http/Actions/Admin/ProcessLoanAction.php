@@ -34,6 +34,7 @@ class ProcessLoanAction
         return redirect()->route('perfect_money.processing')->with('success', 'Transaction confirmed Successfully');
 
     } catch (Exception $exception) {
+        dd($exception);
         DB::rollBack();
 
         return redirect()->route('perfect_money.processing')->with('error', 'Operation failed');

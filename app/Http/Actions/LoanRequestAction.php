@@ -29,8 +29,7 @@ class LoanRequestAction
             'user_id' => auth()->user()->id,
             'transaction_id' => $trans->id,
             'amount' => $request->amount,
-            'status' => LoanRequest::STATUSES['PENDING'],
-            'loan_eligible_id' => $user->loanEligible->id
+            'status' => LoanRequest::STATUSES['PENDING']
         ]);
 
         DB::commit();
@@ -38,6 +37,7 @@ class LoanRequestAction
         return $loan;
 
     } catch (Exception $exception) {
+        dd($exception);
         DB::rollBack();
 
         abort(503, "Service is unavailable to process loan request");

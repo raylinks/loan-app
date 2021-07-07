@@ -39,7 +39,7 @@ class Flutterwave
        // dd($bvn);
         try {
             $verifyBvn = $this->client->get("kyc/bvns/{$bvn}")->throw()->json();
-            dd($verifyBvn->response->json());
+            dd($verifyBvn);
     } catch (Exception $exception) {
         dd($exception);
         $response = $exception->response->json();
