@@ -22,7 +22,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
-        'loan_eligible_id',
+        'eligible_amount',
         'email_token',
         'phone_number',
         'registration_completed'
