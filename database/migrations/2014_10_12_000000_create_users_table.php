@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->text('password');
-            $table->string('eligible_amount');
+            $table->string('password');
+            $table->decimal('eligible_amount', 15, 2)->default(5000.00);
             $table->string('api_token')->nullable();
             $table->string('email_token');
             $table->boolean('registration_completed');

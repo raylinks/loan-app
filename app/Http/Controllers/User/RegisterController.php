@@ -49,7 +49,6 @@ class RegisterController extends Controller
             'last_name' => $request->lastname,
             'email' => $request->email ,
             'password' => Hash::make($request->password),
-            'eligible_amount' => '5000',
             'phone_number' => $request->phone_number,
             'email_token' => Str::random(10),
             'registration_completed' => false

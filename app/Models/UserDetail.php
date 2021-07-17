@@ -18,5 +18,4 @@ class UserDetail extends Model
         'date_of_birth', 'user_id', 'title', 'marital_status', 'address', 'current_employment' , 'occupation', 'years_of_employment', 'monthly_income'
     ];
 
-    protected $keyType = 'string';
 }

@@ -28,8 +28,6 @@ class User extends Authenticatable
         'registration_completed'
     ];
 
-    protected $keyType = 'string';
-
     /**
      * The attributes that should be hidden for arrays.
      *
