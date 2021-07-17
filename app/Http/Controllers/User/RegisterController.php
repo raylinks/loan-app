@@ -36,6 +36,7 @@ class RegisterController extends Controller
         return $this->okResponse('Registration successful.', $user);
         
        }catch(Exception $e){
+           dd($e);
         DB::rollBack();
            abort(500, "Please try again later");
        }
