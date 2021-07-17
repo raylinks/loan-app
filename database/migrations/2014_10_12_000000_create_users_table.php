@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('eligible_amount');
             $table->string('api_token')->nullable();
             $table->string('email_token');
-            $table->boolean('registration_completed');
+            $table->string('registration_completed');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone_number');
             $table->rememberToken();
