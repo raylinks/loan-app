@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
     Route::get('loan-eligibility', [LoanController::class, 'checkEligibility']);
     Route::post('loan-request', [LoanController::class, 'store']);
-    Route::post('transactions', [TransactionController::class, 'index']);
+    Route::get('transactions', [TransactionController::class, 'index']);
     
    // Route::post('account-creation', [CreateAccountController::class, 'store']);
 
