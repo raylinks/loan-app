@@ -8,6 +8,7 @@ use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\BlacklistController;
+use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
     Route::get('loan-eligibility', [LoanController::class, 'checkEligibility']);
     Route::post('loan-request', [LoanController::class, 'store']);
+    Route::post('transactions', [TransactionController::class, 'index']);
     
    // Route::post('account-creation', [CreateAccountController::class, 'store']);
 

@@ -20,7 +20,7 @@ class LoanRequestAction
         $trans = Transaction::create([
             'user_id' => auth()->user()->id,
             'reference' => Transaction::generateReference(),
-            'type' => $request->amount,
+            'type' => "LOAN",
             'status' => Transaction::STATUSES['PENDING'],
         ]);
     
