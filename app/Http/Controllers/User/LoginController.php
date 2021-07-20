@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
 
         if(!$user ||  !Hash::check($request->password, $user->password)){
-            return $this->notFoundResponse("The credentials do not match our record ", [$user]);
+            return $this->notFoundResponse("The credentials do not match our record");
         }
         $token  = $user->createToken('my-app-token')->plainTextToken;
      
