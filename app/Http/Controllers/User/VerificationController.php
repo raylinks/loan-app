@@ -64,6 +64,6 @@ class VerificationController extends Controller
         $now = Carbon::now();
         $diff = $now->diffInMinutes($token->updated_at);
 
-        return $diff < 5 && 0 === $token->is_used;
+        return $diff < 10 && 0 === $token->is_used;
     }
 }
