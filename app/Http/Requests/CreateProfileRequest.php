@@ -30,7 +30,7 @@ class CreateProfileRequest extends FormRequest
             'address' => 'required|string|max:255',
             'current_employment' => 'required|string',
             'occupation' =>  'required|string',
-            'years_of_employment' =>  'required|numeric|min:1|max:2',
+            'years_of_employment' =>  'required|numeric|min:1|max:12',
             'monthly_income' => 'required|string',
             //'profile_picture' => 'required|string|min:3|max:100',
         ];

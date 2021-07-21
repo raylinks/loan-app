@@ -21,14 +21,15 @@ class LoginController extends Controller
         $request->only('email', 'password');
         $user = User::where('email', $request->email)->first();
 
+        if(!$user ||  !Hash::check($request->password, $user->password)){
+            return $this->notFoundResponse("The credentials do not match our record");
+        }
         if($user->registration_completed == false)
         {
             return $this->badRequestResponse("Sorry you have not verified your email");
         }
 
-        if(!$user ||  !Hash::check($request->password, $user->password)){
-            return $this->notFoundResponse("The credentials do not match our record");
-        }
+      
         $token  = $user->createToken('my-app-token')->plainTextToken;
      
         return $this->okResponse('Login successfully', [  
