@@ -43,4 +43,9 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function loan()
+    {
+        return $this->hasOne(LoanRequest::class, 'transaction_id');
+    }
+
 }

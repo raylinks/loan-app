@@ -9,7 +9,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transaction = Transaction::where('user_id', auth()->user()->id)->with('user')->get();
+        $transaction = Transaction::where('user_id', auth()->user()->id)->with('loan')->get();
 
         return $this->okResponse("Transaction retrieved successfully", $transaction);
     }
