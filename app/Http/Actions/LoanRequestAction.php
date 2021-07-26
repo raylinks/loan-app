@@ -37,7 +37,6 @@ class LoanRequestAction
         return $loan;
 
     } catch (Exception $exception) {
-        dd($exception);
         DB::rollBack();
 
         abort(503, "Service is unavailable to process loan request");

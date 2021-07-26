@@ -48,12 +48,13 @@ class SettingsController extends Controller
     {
         $request->validate([
             'account_number' => 'required|string|max:10|min:10',
-            'bank_code' => 'required|string|max:10|exists:banks,code',
+            'bank_code' =>  'required', //'required|string|max:10|exists:banks,code',
         ]);
 
         $requestData = $request->only(['account_number', 'bank_code']);
         
         $result = (new Flutterwave())->getAccountName($requestData);
+        dd($result);
 
         return $this->okResponse('Account name  retrieved successfully', $result );
     }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Actions\LoanRequestAction;
+use App\Models\LoanRequest;
 
 class LoanController extends Controller
 {
@@ -32,6 +33,12 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $request->validate(['amount' => 'required|numeric|min:1|max:100000']);
+
+        $loanStatus = LoanRequest::where(['user_id' => auth()->user()->id, 'status' => LoanRequest::STATUSES['PENDING']])->first();
+
+        if($loanStatus){
+            return $this->badRequestResponse('You already have a pending loan request.');
+        }
 
        $response = (new LoanRequestAction())->execute($request);
 
