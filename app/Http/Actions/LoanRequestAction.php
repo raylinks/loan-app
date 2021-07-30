@@ -28,7 +28,7 @@ class LoanRequestAction
        $loan =  LoanRequest::create([
             'user_id' => auth()->user()->id,
             'transaction_id' => $trans->id,
-            'amount' => $request->amount,
+            'amount_borrowed' => $request->amount,
             'status' => LoanRequest::STATUSES['PENDING']
         ]);
 
