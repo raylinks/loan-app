@@ -22,7 +22,7 @@ class AuthRequest
     {
         try {
            $token  = $this->client->post("v1/auth/login");
-           dd($token);
+          return $token;
       
     } catch (Exception $exception) {
        

@@ -14,9 +14,9 @@ class Monnify
 {
     protected PendingRequest $client;
 
-    public function __construct()
+    public function __construct($token)
     {
-        $this->client = Http::withHeaders(['Authorization' =>   'Bearer'  .  $this->token])
+        $this->client = Http::withHeaders(['Authorization' =>   'Bearer'  .  $token])
             ->baseUrl(config('monnify.base_url'));
     }
 

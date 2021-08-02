@@ -23,13 +23,15 @@ class LoanRequestAction
             'type' => "LOAN",
             'status' => Transaction::STATUSES['PENDING'],
         ]);
-    
 
-       $loan =  LoanRequest::create([
+
+       $loan = LoanRequest::create([
             'user_id' => auth()->user()->id,
             'transaction_id' => $trans->id,
             'amount_borrowed' => $request->amount,
-            'status' => LoanRequest::STATUSES['PENDING']
+            'amount_to_be_paid' => $request->amount,
+            'reason' => $request->reason,
+            'status' => LoanRequest::STATUSES['PENDING'],
         ]);
 
         DB::commit();
@@ -37,6 +39,7 @@ class LoanRequestAction
         return $loan;
 
     } catch (Exception $exception) {
+        dd($exception);
         DB::rollBack();
 
         abort(503, "Service is unavailable to process loan request");

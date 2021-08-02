@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
+use App\Models\LoanRequest;
 use Illuminate\Console\Command;
 
 class LoanPercentIncrease extends Command
@@ -18,7 +20,7 @@ class LoanPercentIncrease extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Increase the percentage of borrowed amount by 3% daily';
 
     /**
      * Create a new command instance.
@@ -37,6 +39,29 @@ class LoanPercentIncrease extends Command
      */
     public function handle()
     {
-        return 0;
+        $loanRequests = LoanRequest::where('status', '=', 'approved_by_admin')->get();
+
+        foreach ($loanRequests as $loanRequest) {
+            $diff = Carbon::parse(Carbon::now())->diffInHours(Carbon::parse($loanRequest->updated_at));
+
+            if ($diff >= 24) {
+                $increment = (3/100) * $loanRequest->amount_to_be_paid;
+                $loanRequest->amount_to_be_paid = $loanRequest->amount_to_be_paid + $increment;
+                $loanRequest->save();
+            }
+
+            if (Carbon::now()->diffInDays($loanRequest->approved_at) >= 14) {
+                $this->sendReminderEmail($loanRequest);
+            }
+        }
     }
+
+    // private function sendReminderEmail($loanRequest)
+    // {
+    //     $user = $loanRequest->user;
+    //     $user->notify(new \App\Notifications\LoanReminder($loanRequest));
+    //    // send notification to admin
+    //     $admin = \App\Models\User::where('role_id', '=', 2)->first();
+    //     $admin->notify(new \App\Notifications\LoanReminder($loanRequest));
+    // }
 }

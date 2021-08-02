@@ -17,6 +17,7 @@ class AddExtraAmountFields extends Migration
             $table->decimal('amount_borrowed')->default(0.00)->after('id');
             $table->string('reason')->after('id');
             $table->decimal('amount_to_be_paid', 15, 2)->default(0.00)->after('id');
+            $table->timestamp('approved_at')->nullable();
             $table->dropColumn(['amount']);
         });
     }

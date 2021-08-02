@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -85,5 +86,25 @@ class User extends Authenticatable
     public function loanEligible()
     {
         return  $this->belongsTo(LoanEligible::class, 'loan_eligible_id');
+    }
+
+    public function loanRequests()
+    {
+        return $this->hasMany(LoanRequest::class, 'user_id');
+    }
+
+    public function isOwingMoney(): bool
+    {
+        $owing = false;
+
+        foreach ($this->loanRequests as $loanRequest) {
+            if (Carbon::now()->diffInDays($loanRequest->approved_at) >= 14) {
+                $owing = true;
+                break;
+            }
+            continue;
+        }
+
+        return $owing;
     }
 }

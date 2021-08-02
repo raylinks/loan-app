@@ -54,7 +54,6 @@ class SettingsController extends Controller
         $requestData = $request->only(['account_number', 'bank_code']);
         
         $result = (new Flutterwave())->getAccountName($requestData);
-        dd($result);
 
         return $this->okResponse('Account name  retrieved successfully', $result );
     }
@@ -86,7 +85,10 @@ class SettingsController extends Controller
         $user = User::where('id', auth()->user()->id)->first();
 
         $user->bankAccount->create([
-            ''
+            'account_number' => 'l',
+            'account_name' => 'j',
+            'bank_id' => 'k',
+            'bank_name' => 'l',
 
         ]);
 

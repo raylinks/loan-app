@@ -82,19 +82,16 @@ class Flutterwave
 
     public function getAccountName(array $data): array
     {
-       // dd(config('flutterwave.secret_key'));
-       //dd($data['bank_code']);
         try{
             $data = [
                 'account_number' => $data['account_number'],
-                'bank_code' => $data['bank_code'],
+                'account_bank' => $data['bank_code'],
                 'seckey' => config('flutterwave.secret_key'),
             ];
         
-         return $this->client->post('gpx/transfers/beneficiaries/create', $data)->throw()->json();
+         return $this->client->post('accounts/resolve', $data)->throw()->json();
         
         }catch (Throwable $e) {
-            dd($e);
            // $this->handleInvalidAccountNumber($e);
             $this->handleException($e);
         }

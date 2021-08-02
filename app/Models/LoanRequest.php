@@ -9,7 +9,7 @@ class LoanRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'transaction_id', 'amount', 'loan_eligible_id', 'status'];
+    protected $guarded = [];
 
     public const STATUSES = [
         'PENDING' => 'pending',
@@ -19,13 +19,14 @@ class LoanRequest extends Model
         'DECLINED' => 'declined',
         'FAILED' => 'failed',
         'ABANDONED' => 'abandoned',
+        'APPROVED_BY_ADMIN' => 'approved_by_admin',
     ];
 
     public function transaction()
     {
         return $this->belongsTo(Transaction::class);
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -27,31 +27,31 @@ class InitiateRepaymentAction
     {
         $ref = $this->generateRef();
 
-        $transRef = md5(Str::random(20));
+        // $transRef = md5(Str::random(20));
 
-         Reference::create([
-            'user_id' => auth()->user()->id,
-            'payment_reference' => $ref,
-            'transaction_reference' => $transRef,
-            'amount' => $request->amount,
-            'status' => PaymentReference::STATUSES['PENDING'],
-            'transaction_type' => PaymentReference::TYPES['REPAYMENT'],
-        ]);
+        //  Reference::create([
+        //     'user_id' => auth()->user()->id,
+        //     'payment_reference' => $ref,
+        //     'transaction_reference' => $transRef,
+        //     'amount' => $request->amount,
+        //     'status' => PaymentReference::STATUSES['PENDING'],
+        //     'transaction_type' => PaymentReference::TYPES['REPAYMENT'],
+        // ]);
 
-        Repayment::create([
-            'user_id' => auth()->user()->id,
-            'transaction_id' => PaymentReference::generateCode(),
-            'amount' => $request->amount,
-            'status' => Repayment::STATUSES['PENDING'],
-            'repay_type' => 'monnify_with_card',
-        ]);
+        // Repayment::create([
+        //     'user_id' => auth()->user()->id,
+        //     'transaction_id' => PaymentReference::generateCode(),
+        //     'amount' => $request->amount,
+        //     'status' => Repayment::STATUSES['PENDING'],
+        //     'repay_type' => 'monnify_with_card',
+        // ]);
 
-        Transaction::create([
-            'user_id' => auth()->user()->id,
-            'reference' => Transaction::generateReference(),
-            'type' => $request->amount,
-            'status' => Repayment::STATUSES['PENDING'],
-        ]);
+        // Transaction::create([
+        //     'user_id' => auth()->user()->id,
+        //     'reference' => Transaction::generateReference(),
+        //     'type' => $request->amount,
+        //     'status' => Repayment::STATUSES['PENDING'],
+        // ]);
 
 
         $response = (new Monnify())->initiateRepayment($request->amount, $ref);

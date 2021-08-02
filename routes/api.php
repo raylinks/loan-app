@@ -9,6 +9,7 @@ use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\BlacklistController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\PayWithCardController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\VerificationController;
 use App\Http\Controllers\User\ResetPasswordController;
@@ -42,13 +43,14 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
 Route::post('verify-otp', [VerificationController::class, 'verifyOneTimePassword']);
 
+Route::post('auth', [PayWithCardController::class, 'store']);
+
 //Authenticated routes
 Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
-    Route::post('account-details', [SettingsController::class, 'getAccountName']);
     Route::get('loan-eligibility', [LoanController::class, 'checkEligibility']);
     Route::post('loan-request', [LoanController::class, 'store']);
     Route::get('transactions', [TransactionController::class, 'index']);
@@ -59,5 +61,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
 
 
 });
+
+Route::post('account-details', [SettingsController::class, 'getAccountName']);
 
 Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);
