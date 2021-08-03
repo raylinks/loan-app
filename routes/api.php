@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
+    Route::post('user-bank-account', [SettingsController::class, 'createUserBankAccount']);
     Route::get('loan-eligibility', [LoanController::class, 'checkEligibility']);
     Route::post('loan-request', [LoanController::class, 'store']);
     Route::get('transactions', [TransactionController::class, 'index']);

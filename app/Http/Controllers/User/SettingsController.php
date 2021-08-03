@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Bank;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserBankAccount;
 use App\Http\Clients\Flutterwave;
 use Illuminate\Http\JsonResponse;
+use App\Http\Actions\SettingsAction;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateProfileRequest;
 
 
 class SettingsController extends Controller
 {
-
     public function createProfile(CreateProfileRequest $request)
     {
        $user = User::where('id' ,auth()->user()->id)->first();
@@ -37,7 +37,7 @@ class SettingsController extends Controller
     public function uploadeBankStament(Request $request)
     {
        $user = User::where('id',auth()->user()->id)->first();
-       dd($user);
+    
        $user->details->create([
 
        ]);
@@ -64,38 +64,15 @@ class SettingsController extends Controller
             'account_number' => 'required|string|max:10|min:10',
             'bank_code' => 'required|string|max:10|exists:banks,code'
         ]);
-        # code...
-        //check if user already has bank account
+    
+        $hasAccount = UserBankAccount::where(['account_number' => $request->account_number])->exists(); 
 
-        $bankAccount = UserBankAccount::where(['account_number' => $request->account_number])->exists(); 
-
-        if($bankAccount){
+        if($hasAccount){
             return $this->forbiddenResponse('This account number has been registered already');
         } 
 
-        $result = (new Flutterwave())->getAccountName($request->account_number, $request->bank_code);
+        $response = (new SettingsAction())->execute($request);
 
-        if ($result['status'] === 200) {
-            $enquiry_result = ['data' => ['statuscode' => '00', 'data' => [
-                'accountName' => data_get($result, 'data.data.fullname'),
-                'accountNumber' => data_get($result, 'data.data.account_number'),
-            ]]];
-        }
-
-        $user = User::where('id', auth()->user()->id)->first();
-
-        $user->bankAccount->create([
-            'account_number' => 'l',
-            'account_name' => 'j',
-            'bank_id' => 'k',
-            'bank_name' => 'l',
-
-        ]);
-
-
-
-
+        return $this->okResponse('Profile created successfully', $response);
     }
-
-
 }
