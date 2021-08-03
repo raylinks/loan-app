@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
     Route::post('create-profile', [SettingsController::class, 'createProfile']);
     Route::post('user-bank-account', [SettingsController::class, 'createUserBankAccount']);
+    Route::post('account-details', [SettingsController::class, 'getAccountName']);
     Route::get('loan-eligibility', [LoanController::class, 'checkEligibility']);
     Route::post('loan-request', [LoanController::class, 'store']);
     Route::get('transactions', [TransactionController::class, 'index']);
@@ -63,6 +64,6 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
 
 });
 
-Route::post('account-details', [SettingsController::class, 'getAccountName']);
+
 
 Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);
