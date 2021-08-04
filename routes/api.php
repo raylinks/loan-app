@@ -28,7 +28,7 @@ use App\Http\Controllers\User\InitiateRepaymentController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
- //header('Access-Control-Allow-Origin', '*');
+//header('Access-Control-Allow-Origin', '*');
 // header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
 
@@ -46,7 +46,7 @@ Route::post('verify-otp', [VerificationController::class, 'verifyOneTimePassword
 Route::post('auth', [PayWithCardController::class, 'store']);
 
 //Authenticated routes
-Route::group(['middleware' => ['auth:sanctum' ]], function(){
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('verify-bvn', [BvnVerificationController::class, 'store']);
     Route::post('search-with-bvn', [BlacklistController::class, 'store']);
     Route::post('account-number', [AccountController::class, 'createAccountNumber']);
@@ -58,12 +58,12 @@ Route::group(['middleware' => ['auth:sanctum' ]], function(){
     Route::get('transactions', [TransactionController::class, 'index']);
     Route::get('incoming/transactions', [DashboardController::class, 'incomingTransactions']);
     Route::get('outgoing/transactions', [DashboardController::class, 'outgoingTransactions']);
-    
-   // Route::post('account-creation', [CreateAccountController::class, 'store']);
+
+    // Route::post('account-creation', [CreateAccountController::class, 'store']);
 
 
 });
 
-
+Route::get('banks', [SettingsController::class, 'getAllBanks']);
 
 Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);
