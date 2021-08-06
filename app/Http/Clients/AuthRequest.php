@@ -9,25 +9,22 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
 class AuthRequest
-{   
+{
     protected PendingRequest $client;
 
     public function __construct()
     {
-        $this->client = Http::withHeaders(['Authorization' => 'Basic' . $this->getEncodedAuth() ])
+        $this->client = Http::withHeaders(["Authorization : Basic" . '' . base64_encode(config('monnify.api_key') . ':' .  config('monnify.secret_key'))])
             ->baseUrl(config('monnify.base_url'));
     }
 
     public function token()
     {
         try {
-           $token  = $this->client->post("v1/auth/login");
-          return $token;
-      
-    } catch (Exception $exception) {
-       
-    }
-
+            $token  = $this->client->post("v1/auth/login");
+            return $token;
+        } catch (Exception $exception) {
+        }
     }
 
 
@@ -46,4 +43,4 @@ class AuthRequest
             )
         );
     }
-}   
+}
