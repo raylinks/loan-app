@@ -9,13 +9,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Transaction extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
-         'user_id', 'reference', 'type',  'status', 'response_message',
+        'user_id', 'reference', 'type',  'status', 'response_message',
     ];
 
     protected $hidden = [
         'id', 'user_id', 'deleted_at', 'updated_at', 'delay',
+    ];
+
+    public const WALLET_ACTIONS = [
+        'CREDIT' => 'credit',
+        'DEBIT' => 'debit'
     ];
 
     public const STATUSES = [
@@ -31,7 +36,7 @@ class Transaction extends Model
     public static function generateReference(): string
     {
         do {
-            $reference = 'TRANS_'.Str::random(15);
+            $reference = 'TRANS_' . Str::random(15);
         } while (self::whereReference($reference)->exists());
 
         return $reference;
@@ -47,5 +52,4 @@ class Transaction extends Model
     {
         return $this->hasOne(LoanRequest::class, 'transaction_id');
     }
-
 }
