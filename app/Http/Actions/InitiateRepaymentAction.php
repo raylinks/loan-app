@@ -34,7 +34,7 @@ class InitiateRepaymentAction
 
             $transRef = md5(Str::random(20));
 
-            Reference::create([
+            $reference = Reference::create([
                 'user_id' => auth()->user()->id,
                 'payment_reference' => $ref,
                 'transaction_reference' => $transRef,
@@ -58,24 +58,13 @@ class InitiateRepaymentAction
                 'repay_type' => 'paystack_popup',
             ]);
 
-            Transaction::create([
-                'user_id' => auth()->user()->id,
-                'reference' => Transaction::generateReference(),
-                'type' => $request->amount,
-                'status' => Repayment::STATUSES['PENDING'],
-            ]);
-
             DB::commit();
-            return true;
+            return $reference;
         } catch (Exception $e) {
             dd($e);
             DB::rollBack();
             abort(500, "Please try again later");
         }
-
-
-        //   $response = (new Paystack())->initiateRepayment($request->amount, $ref);
-
     }
 
     public function generateRef()
