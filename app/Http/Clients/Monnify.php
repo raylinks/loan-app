@@ -46,26 +46,24 @@ class Monnify
             "currencyCode" => "NGN",
             "contractCode" => config('monnify.contract-code'),
             "redirectUrl" => "https://my-merchants-page.com/transaction/confirm",
-            "paymentMethods" => ["CARD","ACCOUNT_TRANSFER"]
+            "paymentMethods" => ["CARD", "ACCOUNT_TRANSFER"]
         ];
     }
 
     protected function cardPayload()
     {
-        $trans = Reference::where('user_id',auth()->user()->id)->where('status', false)->first();
+        $trans = Reference::where('user_id', auth()->user()->id)->where('status', false)->first();
 
         return [
             "transactionReference" => $trans->transaction_reference,
             "collectionChannel" => "API_NOTIFICATION",
-    // "card": {
-    //     "number": "5061040000000000215",
-    //     "expiryMonth": "09",
-    //     "expiryYear": "2022",
-    //     "pin": "1234",
-    //     "cvv": "122"
-    // }
+            // "card": {
+            //     "number": "5061040000000000215",
+            //     "expiryMonth": "09",
+            //     "expiryYear": "2022",
+            //     "pin": "1234",
+            //     "cvv": "122"
+            // }
         ];
     }
-
-   
 }

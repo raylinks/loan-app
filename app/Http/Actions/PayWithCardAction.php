@@ -11,7 +11,7 @@ use App\Support\Currencies;
 use App\Models\CryptoWallet;
 use App\Http\Clients\Monnify;
 use App\Contracts\CryptoClient;
-use App\Models\PaymentReference;
+use App\Models\Reference;
 use App\Models\CryptoTransaction;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +24,5 @@ class PayWithCardAction
 {
     public function execute($request)
     {
-
     }
 }

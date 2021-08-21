@@ -18,5 +18,6 @@ class InitiateRepaymentController extends Controller
     {
         $response = (new InitiateRepaymentAction())->execute($request);
 
+        return $this->okResponse('Repayment initiated.', $response);
     }
 }

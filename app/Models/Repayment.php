@@ -9,7 +9,7 @@ class Repayment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','transaction_id','repay_type', 'amount' ,'status'];
+    protected $fillable = ['user_id', 'transaction_id', 'repay_type', 'amount', 'status'];
 
     public const TYPES = [
         'REPAYMENT' => 'repayment',

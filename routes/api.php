@@ -59,11 +59,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('incoming/transactions', [DashboardController::class, 'incomingTransactions']);
     Route::get('outgoing/transactions', [DashboardController::class, 'outgoingTransactions']);
 
+
+    Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);
     // Route::post('account-creation', [CreateAccountController::class, 'store']);
 
 
 });
 
 Route::get('banks', [SettingsController::class, 'getAllBanks']);
-
-Route::post('initiate-repayment', [InitiateRepaymentController::class, 'store']);

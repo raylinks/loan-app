@@ -2,8 +2,10 @@
 
 namespace App\Http\Actions;
 
+use Exception;
 use App\Models\Business;
 use App\Support\Domains;
+use App\Models\Reference;
 use App\Models\Repayment;
 use App\Models\WalletType;
 use App\Models\Transaction;
@@ -11,8 +13,7 @@ use App\Support\Currencies;
 use Illuminate\Support\Str;
 use App\Models\CryptoWallet;
 use App\Http\Clients\Monnify;
-use App\Contracts\CryptoClient;
-use App\Models\PaymentReference;
+use App\Contracts\CryptoCslient;
 use App\Models\CryptoTransaction;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\DB;
@@ -25,36 +26,55 @@ class InitiateRepaymentAction
 {
     public function execute($request)
     {
-        $ref = $this->generateRef();
 
-        // $transRef = md5(Str::random(20));
+        DB::beginTransaction();
+        try {
 
-        //  Reference::create([
-        //     'user_id' => auth()->user()->id,
-        //     'payment_reference' => $ref,
-        //     'transaction_reference' => $transRef,
-        //     'amount' => $request->amount,
-        //     'status' => PaymentReference::STATUSES['PENDING'],
-        //     'transaction_type' => PaymentReference::TYPES['REPAYMENT'],
-        // ]);
+            $ref = $this->generateRef();
 
-        // Repayment::create([
-        //     'user_id' => auth()->user()->id,
-        //     'transaction_id' => PaymentReference::generateCode(),
-        //     'amount' => $request->amount,
-        //     'status' => Repayment::STATUSES['PENDING'],
-        //     'repay_type' => 'monnify_with_card',
-        // ]);
+            $transRef = md5(Str::random(20));
 
-        // Transaction::create([
-        //     'user_id' => auth()->user()->id,
-        //     'reference' => Transaction::generateReference(),
-        //     'type' => $request->amount,
-        //     'status' => Repayment::STATUSES['PENDING'],
-        // ]);
+            Reference::create([
+                'user_id' => auth()->user()->id,
+                'payment_reference' => $ref,
+                'transaction_reference' => $transRef,
+                'amount' => $request->amount,
+                'status' => Reference::STATUSES['PENDING'],
+                'transaction_type' => Reference::TYPES['REPAYMENT'],
+            ]);
+
+            $trans = Transaction::create([
+                'user_id' => auth()->user()->id,
+                'reference' => Transaction::generateReference(),
+                'type' => $request->amount,
+                'status' => Repayment::STATUSES['PENDING'],
+            ]);
+
+            Repayment::create([
+                'user_id' => auth()->user()->id,
+                'transaction_id' => $trans->id,
+                'amount' => $request->amount,
+                'status' => Repayment::STATUSES['PENDING'],
+                'repay_type' => 'paystack_popup',
+            ]);
+
+            Transaction::create([
+                'user_id' => auth()->user()->id,
+                'reference' => Transaction::generateReference(),
+                'type' => $request->amount,
+                'status' => Repayment::STATUSES['PENDING'],
+            ]);
+
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            dd($e);
+            DB::rollBack();
+            abort(500, "Please try again later");
+        }
 
 
-        $response = (new Monnify())->initiateRepayment($request->amount, $ref);
+        //   $response = (new Paystack())->initiateRepayment($request->amount, $ref);
 
     }
 
@@ -63,7 +83,7 @@ class InitiateRepaymentAction
         $ref = time() . '_' . uniqid();
 
         // Ensure that the reference has not been used previously
-        $validator = \Validator::make(['ref' => $ref], ['ref' => 'unique:payment_references,reference']);
+        $validator = \Validator::make(['ref' => $ref], ['ref' => 'unique:references,payment_reference']);
 
         if ($validator->fails()) {
             return $this->generateRef();

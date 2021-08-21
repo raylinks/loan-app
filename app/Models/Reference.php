@@ -9,7 +9,7 @@ class Reference extends Model
 {
     use HasFactory;
 
-    public $fillable = ['user_id', 'status', 'reference','status'];
+    public $fillable = ['user_id', 'status', 'amount', 'payment_reference', 'transaction_reference', 'status'];
 
     public const TYPES = [
         'REPAYMENT' => 'repayment',
